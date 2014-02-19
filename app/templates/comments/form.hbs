@@ -1,0 +1,9 @@
+<div>
+  <label>Text {{input value=text class='comment-text'}}</label>
+</div>
+<div>
+  <label>Post {{input value=postId class='comment-post-id'}}</label>
+</div>
+
+<button type="submit" {{action 'save' this}}>Save</button>
+<button type="submit" {{action 'cancel' this}}>Cancel</button>

@@ -1,0 +1,18 @@
+<h3>Index</h3>
+
+<p>{{link-to 'New comment' 'comments.new'}}</p>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th>Text</th>
+    <th>Post</th>
+  </tr>
+  {{#each}}
+    <tr class='comment'>
+      <td>{{link-to id 'comments.show' this}}</td>
+      <td>{{text}}</td>
+      <td>{{postId}}</td>
+    </tr>
+  {{/each}}
+</table>

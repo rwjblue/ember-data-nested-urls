@@ -1,0 +1,9 @@
+<div>
+  <label>Title {{input value=title class='post-title'}}</label>
+</div>
+<div>
+  <label>Text {{input value=text class='post-text'}}</label>
+</div>
+
+<button type="submit" {{action 'save' this}}>Save</button>
+<button type="submit" {{action 'cancel' this}}>Cancel</button>
