@@ -1,8 +1,9 @@
 EmberDataNestedUrls::Application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :comments, except: [:new, :edit]
-      resources :posts, except: [:new, :edit]
+      resources :posts, except: [:new, :edit] do
+        resources :comments, except: [:new, :edit]
+      end
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

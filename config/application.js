@@ -9,3 +9,4 @@
 //= require_tree ./initializers
 
 window.App = require('app').default.create();
+

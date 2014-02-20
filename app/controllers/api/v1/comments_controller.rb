@@ -4,7 +4,7 @@ class Api::V1::CommentsController < ApplicationController
 
   # GET /comments
   def index
-    respond_with Comment.all
+    respond_with post.comments
   end
 
   # GET /comments/1
@@ -14,10 +14,10 @@ class Api::V1::CommentsController < ApplicationController
 
   # POST /comments
   def create
-    @comment = Comment.new(comment_params)
+    @comment = post.comments.new(comment_params)
 
     if @comment.save
-      respond_with @comment, status: :created, location: [:api, :v1, @comment]
+      respond_with @comment, status: :created, location: [:api, :v1, post, @comment]
     else
       render json: { errors: @comment.errors }, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class Api::V1::CommentsController < ApplicationController
   # PATCH/PUT /comments/1
   def update
     if @comment.update(comment_params)
-      respond_with @comment, status: :ok, location: [:api, :v1, @comment]
+      respond_with @comment, status: :ok, location: [:api, :v1, post, @comment]
     else
       render json: { errors: @comment.errors }, status: :unprocessable_entity
     end
@@ -40,9 +40,13 @@ class Api::V1::CommentsController < ApplicationController
 
   private
 
+  def post
+    @post ||= Post.find(params[:post_id])
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_comment
-    @comment = Comment.find(params[:id])
+    @comment = post.comments.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
