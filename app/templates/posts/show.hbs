@@ -6,3 +6,15 @@
   <li class='post-title'>Title: {{title}}</li>
   <li class='post-text'>Text: {{text}}</li>
 </ul>
+
+<h4>Comments</h4>
+
+<ul>
+  {{#each comment in comments}}
+    <li {{action 'destroyComment' model comment}}>{{comment.text}}</li>
+  {{/each}}
+</ul>
+
+<h5>Create Comment</h5>
+{{input value=newCommentText}}
+<button {{action 'createComment' model newCommentText}}>Create</button>
