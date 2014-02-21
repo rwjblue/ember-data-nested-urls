@@ -1,19 +1,16 @@
-var get = Ember.get;
-var apiVersion = 'v<%= Rails.application.config.ember.api_version %>'
+import ApplicationAdapter from './application';
 
-export default DS.ActiveModelAdapter.extend({
+var get = Ember.get;
+
+export default ApplicationAdapter.extend({
   buildURL: function(type, id, record){
-    if (arguments.length === 3) {
+    if (arguments.length === 3 && this.buildRecordURL) {
       var url = [],
           host = get(this, 'host'),
-          prefix = this.urlPrefix(),
-          // post.id works properly for create/update, but prior to deleteRecord being called
-          // the relationships are cleared (thus making post.id `null`).
-          postId = get(record, 'post.id') || get(record, 'data.post.id'),
-          recordURL = 'api/' + apiVersion + '/posts/' + postId + '/comments';
+          prefix = this.urlPrefix();
 
       if (prefix) { url.push(prefix); }
-      url.push(recordURL);
+      url.push(this.buildRecordURL(record));
       if (id) { url.push(id); }
 
       url = url.join('/');
