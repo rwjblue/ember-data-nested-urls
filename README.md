@@ -19,3 +19,5 @@ This allows us to override the `buildURL` to check for a `buildRecordURL` method
 1. Include the `nested_url` adapter in your project.
 2. Inherit from it for your nested models.
 3. Define a `buildRecordURL` method that returns the URL needed for create/update/delete.
+
+For an example see [config/adapters/comment.es6](https://github.com/rjackson/ember-data-nested-urls/blob/master/config/adapters/comment.es6).
