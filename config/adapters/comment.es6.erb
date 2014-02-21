@@ -1,0 +1,52 @@
+var get = Ember.get;
+var apiVersion = 'v<%= Rails.application.config.ember.api_version %>'
+
+export default DS.ActiveModelAdapter.extend({
+  buildURL: function(type, id, record){
+    if (arguments.length === 3) {
+      var url = [],
+          host = get(this, 'host'),
+          prefix = this.urlPrefix(),
+          // post.id works properly for create/update, but prior to deleteRecord being called
+          // the relationships are cleared (thus making post.id `null`).
+          postId = get(record, 'post.id') || get(record, 'data.post.id'),
+          recordURL = 'api/' + apiVersion + '/posts/' + postId + '/comments';
+
+      if (prefix) { url.push(prefix); }
+      url.push(recordURL);
+      if (id) { url.push(id); }
+
+      url = url.join('/');
+      if (!host && url) { url = '/' + url; }
+
+      return url;
+    } else {
+      return this._super.apply(this, arguments);
+    }
+  },
+  createRecord: function(store, type, record) {
+    var data = {};
+    var serializer = store.serializerFor(type.typeKey);
+
+    serializer.serializeIntoHash(data, type, record, { includeId: true });
+
+    return this.ajax(this.buildURL(type.typeKey, null, record), "POST", { data: data });
+  },
+
+  updateRecord: function(store, type, record) {
+    var data = {};
+    var serializer = store.serializerFor(type.typeKey);
+
+    serializer.serializeIntoHash(data, type, record);
+
+    var id = get(record, 'id');
+
+    return this.ajax(this.buildURL(type.typeKey, id, record), "PUT", { data: data });
+  },
+
+  deleteRecord: function(store, type, record) {
+    var id = get(record, 'id');
+
+    return this.ajax(this.buildURL(type.typeKey, id, record), "DELETE");
+  }
+});

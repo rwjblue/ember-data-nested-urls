@@ -1,0 +1,14 @@
+// Ensure that the relationship is looked up via the proper URL
+// NOTE: This is only used for async relationships (hasMany('comments', {async: true})).
+
+var apiVersion = '<%= Rails.application.config.ember.api_version %>'
+
+export default DS.ActiveModelSerializer.extend({
+  normalize: function(type, hash, prop) {
+    hash.links = {
+      comments: "/api/v" + apiVersion + "/posts/" + hash.id + "/comments"
+    }
+
+    return this._super(type, hash, prop);
+  }
+});
